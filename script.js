@@ -1,12 +1,15 @@
 // Variables to hold the current question and answer
 let correctAnswer;
+let score = 0;
+let timeLeft = 60; // 1-minute timer
+let timerInterval;
 
 // Generate a random math question
 function generateQuestion() {
     // Random numbers between 1 and 10
     const num1 = Math.floor(Math.random() * 10) + 1;
     const num2 = Math.floor(Math.random() * 10) + 1;
-
+    
     // Randomly choose an operation (+, -, *, /)
     const operations = ['+', '-', '*', '/'];
     const operation = operations[Math.floor(Math.random() * operations.length)];
@@ -48,6 +51,20 @@ function checkAnswer() {
         document.getElementById('result').style.color = 'red';
     }
 }
-
+// Timer function to start the 1-minute countdown
+function startTimer() {
+    timerInterval = setInterval(function() {
+        if (timeLeft > 0) {
+            timeLeft--;
+            document.getElementById('timer').innerText = `Time Left: ${timeLeft}s`;
+        } else {
+            clearInterval(timerInterval);
+            document.getElementById('question').innerText = 'Time is up!';
+            document.getElementById('result').innerText = `Your final score: ${score}`;
+            document.getElementById('answer').disabled = true;
+            document.querySelector('button').disabled = true;
+        }
+    }, 1000);
+}
 // Generate the first question when the page loads
 generateQuestion();
